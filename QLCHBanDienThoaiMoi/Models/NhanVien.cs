@@ -1,0 +1,11 @@
+﻿namespace QLCHBanDienThoaiMoi.Models
+{
+    public class NhanVien
+    {
+        public int Id { get; set; }
+        public string TenNhanVien { get; set; }
+        public string? ChucVu { get; set; }
+        public string SoDienThoai { get; set; }
+        public TaiKhoan TaiKhoan { get; set; }
+    }
+}
