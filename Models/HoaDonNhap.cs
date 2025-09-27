@@ -10,6 +10,6 @@ namespace QLCHBanDienThoaiMoi.Models
         public NhaCungCap NhaCungCap { get;set; }
         public ICollection<ChiTietHoaDonNhap> ChiTietHoaDonNhap { get; set; }
         [NotMapped]
-        public decimal ThanhTien => ChiTietHoaDonNhap.Sum(ct => ct.GiaBan * ct.SoLuong);
+        public decimal ThanhTien => ChiTietHoaDonNhap.Sum(ct => ct.GiaNhap * ct.SoLuong);
     }
 }
