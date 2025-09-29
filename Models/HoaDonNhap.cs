@@ -8,8 +8,8 @@ namespace QLCHBanDienThoaiMoi.Models
         public DateTime NgayLap { get; set; }
         public int NCCId { get; set; }
         public NhaCungCap NhaCungCap { get;set; }
-        public ICollection<ChiTietHoaDonNhap> ChiTietHoaDonNhap { get; set; }
+        public ICollection<ChiTietHoaDonNhap> ChiTietHoaDonNhaps { get; set; }
         [NotMapped]
-        public decimal ThanhTien => ChiTietHoaDonNhap.Sum(ct => ct.GiaNhap * ct.SoLuong);
+        public decimal ThanhTien => ChiTietHoaDonNhaps.Sum(ct => ct.GiaNhap * ct.SoLuong);
     }
 }

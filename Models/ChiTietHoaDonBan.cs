@@ -11,7 +11,7 @@ namespace QLCHBanDienThoaiMoi.Models
         public SanPham SanPham { get;set; }
         public int SoLuong { get; set; }
         public int GiaBan { get; set; }
-        public int KhuyenMai { get; set; } = 0;
+        public int PhieuBaoHanhId { get; set; }
         public PhieuBaoHanh PhieuBaoHanh { get; set; }
     }
 }

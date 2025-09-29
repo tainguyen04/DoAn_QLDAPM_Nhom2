@@ -7,5 +7,6 @@
         public string? ChucVu { get; set; }
         public string SoDienThoai { get; set; }
         public TaiKhoan TaiKhoan { get; set; }
+        public ICollection<HoaDonBan> HoaDonBans { get; set; }
     }
 }

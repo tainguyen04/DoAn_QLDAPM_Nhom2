@@ -12,8 +12,10 @@
         public DanhMucSanPham DanhMucSanPham { get; set; }
         public string HangSanXuat { get; set; }
         public string MoTa { get; set; }
+        public string HinhAnh { get; set; }
         public decimal KhuyenMai { get; set; } = 0;
-        public ICollection<ChiTietHoaDonNhap> ChiTietHoaDonNhap { get; set; }
-        public ICollection<ChiTietHoaDonBan> ChiTietHoaDonBan { get; set; }
+        public ICollection<ChiTietHoaDonNhap> ChiTietHoaDonNhaps { get; set; }
+        public ICollection<ChiTietHoaDonBan> ChiTietHoaDonBans { get; set; }
+        public ICollection<GioHang> GioHangs { get; set; }
     }
 }

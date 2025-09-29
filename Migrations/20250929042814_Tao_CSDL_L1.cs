@@ -1,0 +1,383 @@
+﻿using System;
+using Microsoft.EntityFrameworkCore.Migrations;
+
+#nullable disable
+
+namespace QLCHBanDienThoaiMoi.Migrations
+{
+    /// <inheritdoc />
+    public partial class Tao_CSDL_L1 : Migration
+    {
+        /// <inheritdoc />
+        protected override void Up(MigrationBuilder migrationBuilder)
+        {
+            migrationBuilder.CreateTable(
+                name: "DanhMucSanPham",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    TenDanhMuc = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_DanhMucSanPham", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "NhaCungCap",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    TenNCC = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    DiaChi = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    SoDienThoai = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Email = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_NhaCungCap", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "TaiKhoan",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    TenDangNhap = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    MatKhau = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    VaiTro = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_TaiKhoan", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "SanPham",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    TenSanPham = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    GiaNhap = table.Column<int>(type: "int", nullable: false),
+                    GiaBan = table.Column<int>(type: "int", nullable: false),
+                    SoLuongTon = table.Column<int>(type: "int", nullable: false),
+                    DanhMucId = table.Column<int>(type: "int", nullable: false),
+                    HangSanXuat = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    MoTa = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    HinhAnh = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    KhuyenMai = table.Column<decimal>(type: "decimal(5,2)", precision: 5, scale: 2, nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_SanPham", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_SanPham_DanhMucSanPham_DanhMucId",
+                        column: x => x.DanhMucId,
+                        principalTable: "DanhMucSanPham",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "HoaDonNhap",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    NgayLap = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    NCCId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_HoaDonNhap", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_HoaDonNhap_NhaCungCap_NCCId",
+                        column: x => x.NCCId,
+                        principalTable: "NhaCungCap",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "KhachHang",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false),
+                    TenKhachHang = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    DiaChi = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    SoDienThoai = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Email = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_KhachHang", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_KhachHang_TaiKhoan_Id",
+                        column: x => x.Id,
+                        principalTable: "TaiKhoan",
+                        principalColumn: "Id");
+                });
+
+            migrationBuilder.CreateTable(
+                name: "NhanVien",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false),
+                    TenNhanVien = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    ChucVu = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    SoDienThoai = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_NhanVien", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_NhanVien_TaiKhoan_Id",
+                        column: x => x.Id,
+                        principalTable: "TaiKhoan",
+                        principalColumn: "Id");
+                });
+
+            migrationBuilder.CreateTable(
+                name: "ChiTietHoaDonNhap",
+                columns: table => new
+                {
+                    HoaDonNhapId = table.Column<int>(type: "int", nullable: false),
+                    SanPhamId = table.Column<int>(type: "int", nullable: false),
+                    SoLuong = table.Column<int>(type: "int", nullable: false),
+                    GiaNhap = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ChiTietHoaDonNhap", x => new { x.HoaDonNhapId, x.SanPhamId });
+                    table.ForeignKey(
+                        name: "FK_ChiTietHoaDonNhap_HoaDonNhap_HoaDonNhapId",
+                        column: x => x.HoaDonNhapId,
+                        principalTable: "HoaDonNhap",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_ChiTietHoaDonNhap_SanPham_SanPhamId",
+                        column: x => x.SanPhamId,
+                        principalTable: "SanPham",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "GioHang",
+                columns: table => new
+                {
+                    KhachHangId = table.Column<int>(type: "int", nullable: false),
+                    SanPhamId = table.Column<int>(type: "int", nullable: false),
+                    SoLuong = table.Column<int>(type: "int", nullable: false),
+                    GioHangKhachHangId = table.Column<int>(type: "int", nullable: true),
+                    GioHangSanPhamId = table.Column<int>(type: "int", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_GioHang", x => new { x.KhachHangId, x.SanPhamId });
+                    table.ForeignKey(
+                        name: "FK_GioHang_GioHang_GioHangKhachHangId_GioHangSanPhamId",
+                        columns: x => new { x.GioHangKhachHangId, x.GioHangSanPhamId },
+                        principalTable: "GioHang",
+                        principalColumns: new[] { "KhachHangId", "SanPhamId" });
+                    table.ForeignKey(
+                        name: "FK_GioHang_KhachHang_KhachHangId",
+                        column: x => x.KhachHangId,
+                        principalTable: "KhachHang",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_GioHang_SanPham_SanPhamId",
+                        column: x => x.SanPhamId,
+                        principalTable: "SanPham",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "HoaDonBan",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    NgayBan = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    KhachHangId = table.Column<int>(type: "int", nullable: false),
+                    NhanVienId = table.Column<int>(type: "int", nullable: true),
+                    GioHangKhachHangId = table.Column<int>(type: "int", nullable: true),
+                    GioHangSanPhamId = table.Column<int>(type: "int", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_HoaDonBan", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_HoaDonBan_GioHang_GioHangKhachHangId_GioHangSanPhamId",
+                        columns: x => new { x.GioHangKhachHangId, x.GioHangSanPhamId },
+                        principalTable: "GioHang",
+                        principalColumns: new[] { "KhachHangId", "SanPhamId" });
+                    table.ForeignKey(
+                        name: "FK_HoaDonBan_KhachHang_KhachHangId",
+                        column: x => x.KhachHangId,
+                        principalTable: "KhachHang",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_HoaDonBan_NhanVien_NhanVienId",
+                        column: x => x.NhanVienId,
+                        principalTable: "NhanVien",
+                        principalColumn: "Id");
+                });
+
+            migrationBuilder.CreateTable(
+                name: "ChiTietHoaDonBan",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    HoaDonBanId = table.Column<int>(type: "int", nullable: false),
+                    SanPhamId = table.Column<int>(type: "int", nullable: false),
+                    SoLuong = table.Column<int>(type: "int", nullable: false),
+                    GiaBan = table.Column<int>(type: "int", nullable: false),
+                    PhieuBaoHanhId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ChiTietHoaDonBan", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_ChiTietHoaDonBan_HoaDonBan_HoaDonBanId",
+                        column: x => x.HoaDonBanId,
+                        principalTable: "HoaDonBan",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_ChiTietHoaDonBan_SanPham_SanPhamId",
+                        column: x => x.SanPhamId,
+                        principalTable: "SanPham",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "PhieuBaoHanh",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    ChiTietHoaDonBanId = table.Column<int>(type: "int", nullable: false),
+                    NgayLap = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    NgayHetHan = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    MoTa = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    TrangThai = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_PhieuBaoHanh", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_PhieuBaoHanh_ChiTietHoaDonBan_ChiTietHoaDonBanId",
+                        column: x => x.ChiTietHoaDonBanId,
+                        principalTable: "ChiTietHoaDonBan",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ChiTietHoaDonBan_HoaDonBanId",
+                table: "ChiTietHoaDonBan",
+                column: "HoaDonBanId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ChiTietHoaDonBan_SanPhamId",
+                table: "ChiTietHoaDonBan",
+                column: "SanPhamId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ChiTietHoaDonNhap_SanPhamId",
+                table: "ChiTietHoaDonNhap",
+                column: "SanPhamId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_GioHang_GioHangKhachHangId_GioHangSanPhamId",
+                table: "GioHang",
+                columns: new[] { "GioHangKhachHangId", "GioHangSanPhamId" });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_GioHang_SanPhamId",
+                table: "GioHang",
+                column: "SanPhamId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_HoaDonBan_GioHangKhachHangId_GioHangSanPhamId",
+                table: "HoaDonBan",
+                columns: new[] { "GioHangKhachHangId", "GioHangSanPhamId" });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_HoaDonBan_KhachHangId",
+                table: "HoaDonBan",
+                column: "KhachHangId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_HoaDonBan_NhanVienId",
+                table: "HoaDonBan",
+                column: "NhanVienId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_HoaDonNhap_NCCId",
+                table: "HoaDonNhap",
+                column: "NCCId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_PhieuBaoHanh_ChiTietHoaDonBanId",
+                table: "PhieuBaoHanh",
+                column: "ChiTietHoaDonBanId",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_SanPham_DanhMucId",
+                table: "SanPham",
+                column: "DanhMucId");
+        }
+
+        /// <inheritdoc />
+        protected override void Down(MigrationBuilder migrationBuilder)
+        {
+            migrationBuilder.DropTable(
+                name: "ChiTietHoaDonNhap");
+
+            migrationBuilder.DropTable(
+                name: "PhieuBaoHanh");
+
+            migrationBuilder.DropTable(
+                name: "HoaDonNhap");
+
+            migrationBuilder.DropTable(
+                name: "ChiTietHoaDonBan");
+
+            migrationBuilder.DropTable(
+                name: "NhaCungCap");
+
+            migrationBuilder.DropTable(
+                name: "HoaDonBan");
+
+            migrationBuilder.DropTable(
+                name: "GioHang");
+
+            migrationBuilder.DropTable(
+                name: "NhanVien");
+
+            migrationBuilder.DropTable(
+                name: "KhachHang");
+
+            migrationBuilder.DropTable(
+                name: "SanPham");
+
+            migrationBuilder.DropTable(
+                name: "TaiKhoan");
+
+            migrationBuilder.DropTable(
+                name: "DanhMucSanPham");
+        }
+    }
+}

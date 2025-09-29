@@ -6,6 +6,8 @@
         public string TenDangNhap { get; set; }
         public string MatKhau { get; set; }
         public VaiTro VaiTro { get; set; }
+        public NhanVien NhanVien { get; set; }
+        public KhachHang KhachHang { get; set; }
     }
     public enum VaiTro
     {
