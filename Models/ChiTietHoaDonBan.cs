@@ -1,17 +1,25 @@
 ﻿
 
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+
 namespace QLCHBanDienThoaiMoi.Models
 {
     public class ChiTietHoaDonBan
     {
-        public int Id { get;set; }
+        [Key]
+        [Column(Order = 1)]
         public int HoaDonBanId { get;set; }
-        public HoaDonBan HoaDonBan { get;set; }
+        
+        [Key]
+        [Column(Order = 2)]
         public int SanPhamId { get;set; }
-        public SanPham SanPham { get;set; }
+        
         public int SoLuong { get; set; }
         public int GiaBan { get; set; }
-        public int PhieuBaoHanhId { get; set; }
-        public PhieuBaoHanh PhieuBaoHanh { get; set; }
+        
+        public PhieuBaoHanh? PhieuBaoHanh { get; set; }
+        public HoaDonBan? HoaDonBan { get; set; } 
+        public SanPham? SanPham { get; set; }
     }
 }

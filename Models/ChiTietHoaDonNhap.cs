@@ -13,8 +13,8 @@ namespace QLCHBanDienThoaiMoi.Models
         public int SanPhamId { get; set; }
         public int SoLuong { get; set; }
         public int GiaNhap { get; set; }
-        public HoaDonNhap HoaDonNhap { get; set; }
-        public SanPham SanPham { get; set; }
+        public HoaDonNhap? HoaDonNhap { get; set; } 
+        public SanPham? SanPham { get; set; } 
 
     }
 }

@@ -17,7 +17,7 @@ namespace QLCHBanDienThoaiMoi.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    TenDanhMuc = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                    TenDanhMuc = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -30,10 +30,10 @@ namespace QLCHBanDienThoaiMoi.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    TenNCC = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    DiaChi = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    SoDienThoai = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Email = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    TenNCC = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    DiaChi = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    SoDienThoai = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Email = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -107,10 +107,10 @@ namespace QLCHBanDienThoaiMoi.Migrations
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false),
-                    TenKhachHang = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    TenKhachHang = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     DiaChi = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    SoDienThoai = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Email = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    SoDienThoai = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Email = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -127,9 +127,8 @@ namespace QLCHBanDienThoaiMoi.Migrations
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false),
-                    TenNhanVien = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    ChucVu = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    SoDienThoai = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    TenNhanVien = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    SoDienThoai = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -205,8 +204,9 @@ namespace QLCHBanDienThoaiMoi.Migrations
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     NgayBan = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    KhachHangId = table.Column<int>(type: "int", nullable: false),
+                    KhachHangId = table.Column<int>(type: "int", nullable: true),
                     NhanVienId = table.Column<int>(type: "int", nullable: true),
+                    PhuongThucThanhToan = table.Column<int>(type: "int", nullable: false),
                     GioHangKhachHangId = table.Column<int>(type: "int", nullable: true),
                     GioHangSanPhamId = table.Column<int>(type: "int", nullable: true)
                 },
@@ -222,8 +222,7 @@ namespace QLCHBanDienThoaiMoi.Migrations
                         name: "FK_HoaDonBan_KhachHang_KhachHangId",
                         column: x => x.KhachHangId,
                         principalTable: "KhachHang",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "Id");
                     table.ForeignKey(
                         name: "FK_HoaDonBan_NhanVien_NhanVienId",
                         column: x => x.NhanVienId,
@@ -235,17 +234,14 @@ namespace QLCHBanDienThoaiMoi.Migrations
                 name: "ChiTietHoaDonBan",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
                     HoaDonBanId = table.Column<int>(type: "int", nullable: false),
                     SanPhamId = table.Column<int>(type: "int", nullable: false),
                     SoLuong = table.Column<int>(type: "int", nullable: false),
-                    GiaBan = table.Column<int>(type: "int", nullable: false),
-                    PhieuBaoHanhId = table.Column<int>(type: "int", nullable: false)
+                    GiaBan = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_ChiTietHoaDonBan", x => x.Id);
+                    table.PrimaryKey("PK_ChiTietHoaDonBan", x => new { x.HoaDonBanId, x.SanPhamId });
                     table.ForeignKey(
                         name: "FK_ChiTietHoaDonBan_HoaDonBan_HoaDonBanId",
                         column: x => x.HoaDonBanId,
@@ -266,27 +262,22 @@ namespace QLCHBanDienThoaiMoi.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    ChiTietHoaDonBanId = table.Column<int>(type: "int", nullable: false),
+                    HoaDonBanId = table.Column<int>(type: "int", nullable: false),
+                    SanPhamId = table.Column<int>(type: "int", nullable: false),
                     NgayLap = table.Column<DateTime>(type: "datetime2", nullable: false),
                     NgayHetHan = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    MoTa = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    TrangThai = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    MoTa = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    TrangThai = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_PhieuBaoHanh", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_PhieuBaoHanh_ChiTietHoaDonBan_ChiTietHoaDonBanId",
-                        column: x => x.ChiTietHoaDonBanId,
+                        name: "FK_PhieuBaoHanh_ChiTietHoaDonBan_HoaDonBanId_SanPhamId",
+                        columns: x => new { x.HoaDonBanId, x.SanPhamId },
                         principalTable: "ChiTietHoaDonBan",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumns: new[] { "HoaDonBanId", "SanPhamId" });
                 });
-
-            migrationBuilder.CreateIndex(
-                name: "IX_ChiTietHoaDonBan_HoaDonBanId",
-                table: "ChiTietHoaDonBan",
-                column: "HoaDonBanId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_ChiTietHoaDonBan_SanPhamId",
@@ -329,9 +320,9 @@ namespace QLCHBanDienThoaiMoi.Migrations
                 column: "NCCId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_PhieuBaoHanh_ChiTietHoaDonBanId",
+                name: "IX_PhieuBaoHanh_HoaDonBanId_SanPhamId",
                 table: "PhieuBaoHanh",
-                column: "ChiTietHoaDonBanId",
+                columns: new[] { "HoaDonBanId", "SanPhamId" },
                 unique: true);
 
             migrationBuilder.CreateIndex(
