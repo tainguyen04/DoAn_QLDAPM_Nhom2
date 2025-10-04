@@ -1,3 +1,4 @@
+
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -15,6 +16,5 @@ namespace QLCHBanDienThoaiMoi.Models
         public int GiaNhap { get; set; }
         public HoaDonNhap? HoaDonNhap { get; set; } 
         public SanPham? SanPham { get; set; } 
-
     }
 }

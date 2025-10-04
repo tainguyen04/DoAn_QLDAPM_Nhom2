@@ -1,4 +1,4 @@
-﻿namespace QLCHBanDienThoaiMoi.Models
+namespace QLCHBanDienThoaiMoi.Models
 {
     public class NhaCungCap
     {
