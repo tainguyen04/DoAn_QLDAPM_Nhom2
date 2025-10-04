@@ -1,5 +1,3 @@
-﻿
-
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -7,6 +5,7 @@ namespace QLCHBanDienThoaiMoi.Models
 {
     public class ChiTietHoaDonBan
     {
+        
         [Key]
         [Column(Order = 1)]
         public int HoaDonBanId { get;set; }

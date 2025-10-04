@@ -1,4 +1,4 @@
-﻿
+
 using Microsoft.EntityFrameworkCore;
 using QLCHBanDienThoaiMoi.Models;
 
@@ -10,7 +10,7 @@ public class ApplicationDbContext : DbContext
         : base(options)
     {
     }
-
+}
     // DbSet cho tất cả entity
     public DbSet<ChiTietHoaDonBan> ChiTietHoaDonBan { get; set; }
     public DbSet<ChiTietHoaDonNhap> ChiTietHoaDonNhap { get; set; }
@@ -184,3 +184,4 @@ public class ApplicationDbContext : DbContext
 
     }
 }
+
