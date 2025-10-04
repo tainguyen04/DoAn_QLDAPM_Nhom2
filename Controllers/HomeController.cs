@@ -51,10 +51,6 @@ namespace QLCHBanDienThoaiMoi.Controllers
 
             return View(sanPham);
         }
-
-<<<<<<< HEAD
-    
-=======
     }
->>>>>>> e7cb79289ef3b05a32b62d5f9f4f197e95f24105
+
 }
