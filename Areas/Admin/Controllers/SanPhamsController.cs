@@ -10,8 +10,9 @@ using QLCHBanDienThoaiMoi.Data;
 using QLCHBanDienThoaiMoi.Models;
 using SlugGenerator;
 
-namespace QLCHBanDienThoaiMoi.Controllers
+namespace QLCHBanDienThoaiMoi.Areas.Admin.Controllers
 {
+    [Area("Admin")]
     public class SanPhamsController : Controller
     {
         private readonly ApplicationDbContext _context;
@@ -83,7 +84,7 @@ namespace QLCHBanDienThoaiMoi.Controllers
         // GET: SanPhams/Create
         public IActionResult Create()
         {
-            ViewData["DanhMucId"] = new SelectList(_context.DanhMucSanPham, "Id", "Id");
+            ViewData["DanhMucId"] = new SelectList(_context.DanhMucSanPham, "Id", "TenDanhMuc");
             return View();
         }
 

@@ -8,24 +8,26 @@ using Microsoft.EntityFrameworkCore;
 using QLCHBanDienThoaiMoi.Data;
 using QLCHBanDienThoaiMoi.Models;
 
-namespace QLCHBanDienThoaiMoi.Controllers
+namespace QLCHBanDienThoaiMoi.Areas.Admin.Controllers
 {
-    public class DanhMucSanPhamsController : Controller
+    [Area("Admin")]
+    public class HomeController : Controller
     {
         private readonly ApplicationDbContext _context;
 
-        public DanhMucSanPhamsController(ApplicationDbContext context)
+        public HomeController(ApplicationDbContext context)
         {
             _context = context;
         }
 
-        // GET: DanhMucSanPhams
+        // GET: Admin/Home
         public async Task<IActionResult> Index()
         {
-            return View(await _context.DanhMucSanPham.ToListAsync());
+            var applicationDbContext = _context.SanPham.Include(s => s.DanhMucSanPham);
+            return View(await applicationDbContext.ToListAsync());
         }
 
-        // GET: DanhMucSanPhams/Details/5
+        // GET: Admin/Home/Details/5
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -33,43 +35,42 @@ namespace QLCHBanDienThoaiMoi.Controllers
                 return NotFound();
             }
 
-            var danhMucSanPham = await _context.DanhMucSanPham
+            var sanPham = await _context.SanPham
+                .Include(s => s.DanhMucSanPham)
                 .FirstOrDefaultAsync(m => m.Id == id);
-            if (danhMucSanPham == null)
+            if (sanPham == null)
             {
                 return NotFound();
             }
 
-            return View(danhMucSanPham);
+            return View(sanPham);
         }
 
-        // GET: DanhMucSanPhams/Create
+        // GET: Admin/Home/Create
         public IActionResult Create()
         {
+            ViewData["DanhMucId"] = new SelectList(_context.DanhMucSanPham, "Id", "Id");
             return View();
         }
 
-        // POST: DanhMucSanPhams/Create
+        // POST: Admin/Home/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,TenDanhMuc")] DanhMucSanPham danhMucSanPham)
+        public async Task<IActionResult> Create([Bind("Id,TenSanPham,GiaNhap,GiaBan,SoLuongTon,DanhMucId,HangSanXuat,MoTa,HinhAnh,KhuyenMai")] SanPham sanPham)
         {
-            foreach (var error in ModelState.Values.SelectMany(v => v.Errors))
-            {
-                Console.WriteLine(error.ErrorMessage);
-            }
             if (ModelState.IsValid)
             {
-                _context.Add(danhMucSanPham);
+                _context.Add(sanPham);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            return View(danhMucSanPham);
+            ViewData["DanhMucId"] = new SelectList(_context.DanhMucSanPham, "Id", "Id", sanPham.DanhMucId);
+            return View(sanPham);
         }
 
-        // GET: DanhMucSanPhams/Edit/5
+        // GET: Admin/Home/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -77,22 +78,23 @@ namespace QLCHBanDienThoaiMoi.Controllers
                 return NotFound();
             }
 
-            var danhMucSanPham = await _context.DanhMucSanPham.FindAsync(id);
-            if (danhMucSanPham == null)
+            var sanPham = await _context.SanPham.FindAsync(id);
+            if (sanPham == null)
             {
                 return NotFound();
             }
-            return View(danhMucSanPham);
+            ViewData["DanhMucId"] = new SelectList(_context.DanhMucSanPham, "Id", "Id", sanPham.DanhMucId);
+            return View(sanPham);
         }
 
-        // POST: DanhMucSanPhams/Edit/5
+        // POST: Admin/Home/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,TenDanhMuc")] DanhMucSanPham danhMucSanPham)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,TenSanPham,GiaNhap,GiaBan,SoLuongTon,DanhMucId,HangSanXuat,MoTa,HinhAnh,KhuyenMai")] SanPham sanPham)
         {
-            if (id != danhMucSanPham.Id)
+            if (id != sanPham.Id)
             {
                 return NotFound();
             }
@@ -101,12 +103,12 @@ namespace QLCHBanDienThoaiMoi.Controllers
             {
                 try
                 {
-                    _context.Update(danhMucSanPham);
+                    _context.Update(sanPham);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!DanhMucSanPhamExists(danhMucSanPham.Id))
+                    if (!SanPhamExists(sanPham.Id))
                     {
                         return NotFound();
                     }
@@ -117,10 +119,11 @@ namespace QLCHBanDienThoaiMoi.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            return View(danhMucSanPham);
+            ViewData["DanhMucId"] = new SelectList(_context.DanhMucSanPham, "Id", "Id", sanPham.DanhMucId);
+            return View(sanPham);
         }
 
-        // GET: DanhMucSanPhams/Delete/5
+        // GET: Admin/Home/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -128,34 +131,35 @@ namespace QLCHBanDienThoaiMoi.Controllers
                 return NotFound();
             }
 
-            var danhMucSanPham = await _context.DanhMucSanPham
+            var sanPham = await _context.SanPham
+                .Include(s => s.DanhMucSanPham)
                 .FirstOrDefaultAsync(m => m.Id == id);
-            if (danhMucSanPham == null)
+            if (sanPham == null)
             {
                 return NotFound();
             }
 
-            return View(danhMucSanPham);
+            return View(sanPham);
         }
 
-        // POST: DanhMucSanPhams/Delete/5
+        // POST: Admin/Home/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var danhMucSanPham = await _context.DanhMucSanPham.FindAsync(id);
-            if (danhMucSanPham != null)
+            var sanPham = await _context.SanPham.FindAsync(id);
+            if (sanPham != null)
             {
-                _context.DanhMucSanPham.Remove(danhMucSanPham);
+                _context.SanPham.Remove(sanPham);
             }
 
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
-        private bool DanhMucSanPhamExists(int id)
+        private bool SanPhamExists(int id)
         {
-            return _context.DanhMucSanPham.Any(e => e.Id == id);
+            return _context.SanPham.Any(e => e.Id == id);
         }
     }
 }
