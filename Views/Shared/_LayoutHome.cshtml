@@ -12,7 +12,7 @@
 </head>
 <body>
     <header>
-        <nav class="navbar navbar-expand-sm navbar-light bg-light">
+        <nav class="navbar navbar-expand-sm navbar-light bg-light fixed-top">
             <div class="container-fluid">
                 <!-- Logo / Tên thương hiệu -->
                 <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index" style="margin-left:30px;">
@@ -45,34 +45,10 @@
                 </div>
             </div>
         </nav>
-        <div id="demo" class="carousel slide" data-bs-ride="carousel">
-
-
-            <!-- The slideshow/carousel -->
-            <div class="carousel-inner text-center">
-                @for (int i = 0; i < Math.Min(5, Model.Count); i++)
-                {
-                    var sp = Model[i];
-                    <a>
-                        <div class="carousel-item @(i == 0 ? "active" : "")">
-                            <img src="~/images/@sp.HinhAnh"
-                                 class="d-block w-100"
-                                 style="height:250px; width:auto; object-fit:contain; background-color:#070917;">
-                        </div>
-                    </a>
-
-                }
-            </div>
-            <button class="carousel-control-prev" type="button" data-bs-target="#demo" data-bs-slide="prev">
-                <span class="carousel-control-prev-icon"></span>
-            </button>
-            <button class="carousel-control-next" type="button" data-bs-target="#demo" data-bs-slide="next">
-                <span class="carousel-control-next-icon"></span>
-            </button>
-        </div>
+        
     </header>
 
-
+    @RenderSection("FullWidthCarousel", required: false)
     <div class="container">
         <main role="main" class="pb-3">
             @RenderBody()
