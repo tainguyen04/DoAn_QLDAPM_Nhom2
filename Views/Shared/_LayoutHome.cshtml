@@ -13,7 +13,7 @@
 </head>
 <body>
     <header>
-        <nav class="navbar navbar-expand-sm navbar-light bg-light">
+        <nav class="navbar navbar-expand-sm navbar-light bg-light fixed-top">
             <div class="container-fluid">
                 <!-- Logo / Tên thương hiệu -->
                 <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index" style="margin-left:30px;">
@@ -46,9 +46,10 @@
                 </div>
             </div>
         </nav>
+
     </header>
 
-
+    @RenderSection("FullWidthCarousel", required: false)
     <div class="container">
         <main role="main" class="pb-3">
             @RenderBody()
