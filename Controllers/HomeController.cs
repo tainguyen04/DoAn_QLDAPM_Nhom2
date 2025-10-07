@@ -22,7 +22,10 @@ namespace QLCHBanDienThoaiMoi.Controllers
         // GET: Home
         public async Task<IActionResult> Index(int page = 1,int pageSize = 10)
         {
-            var sanPhams = _context.SanPham.Include(s => s.DanhMucSanPham).OrderByDescending(s => s.KhuyenMai);
+            var sanPhams = _context.SanPham
+                            .Include(s => s.DanhMucSanPham)
+                            .Include(s => s.KhuyenMai)
+                            .OrderByDescending(s => s.KhuyenMai != null ? s.KhuyenMai.GiaTri : 0);
             var totalItems = await sanPhams.CountAsync();
             var totalPages = (int)Math.Ceiling((double)totalItems / pageSize);
             var pagedSanPhams = await sanPhams.Skip((page - 1) * pageSize).Take(pageSize).ToListAsync();
@@ -43,6 +46,7 @@ namespace QLCHBanDienThoaiMoi.Controllers
 
             var sanPham = await _context.SanPham
                 .Include(s => s.DanhMucSanPham)
+                .Include(s => s.KhuyenMai)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (sanPham == null)
             {

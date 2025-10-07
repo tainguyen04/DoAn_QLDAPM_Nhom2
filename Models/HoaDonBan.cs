@@ -15,7 +15,7 @@ namespace QLCHBanDienThoaiMoi.Models
         public PhuongThucThanhToan PhuongThucThanhToan { get; set; }
         public ICollection<ChiTietHoaDonBan> ChiTietHoaDonBans { get; set; } = new List<ChiTietHoaDonBan>();
         [NotMapped]
-        public decimal ThanhTien => ChiTietHoaDonBans.Sum(ct => ct.GiaBan * (1 - ct.SanPham.KhuyenMai / 100) * ct.SoLuong);
+        public decimal ThanhTien => ChiTietHoaDonBans.Sum(ct => ct.GiaBan * (1 - (ct.SanPham?.KhuyenMai?.GiaTri ?? 0) / 100) * ct.SoLuong);
     }
     public enum PhuongThucThanhToan
     {
