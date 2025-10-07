@@ -52,12 +52,12 @@
                         style="text-decoration:none; color:black; white-space: normal; word-wrap: break-word;">
                             @item.TenSanPham
                         </a>
-                        @if (item.KhuyenMai > 0)
+                        @if ((item.KhuyenMai?.GiaTri ?? 0) > 0)
                         {
-                            <h6 class="text-danger mb-0 fst-italic">@Html.FormatPrice(item.GiaBan * (100 - item.KhuyenMai) / 100)</h6>
+                            <h6 class="text-danger mb-0 fst-italic">@Html.FormatPrice(item.GiaBan * (100 - item.KhuyenMai.GiaTri) / 100)</h6>
                             <div>
                                 <span class="text-muted text-decoration-line-through fs-5">@Html.FormatPrice(item.GiaBan)</span>
-                                <span class="text-danger fst-italic fw-bold">-@item.KhuyenMai%</span>
+                                <span class="text-danger fst-italic fw-bold">-@item.KhuyenMai.GiaTri%</span>
                             </div>
                             
                         }

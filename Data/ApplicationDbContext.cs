@@ -24,6 +24,9 @@ public class ApplicationDbContext : DbContext
     public DbSet<PhieuBaoHanh> PhieuBaoHanh { get; set; }
     public DbSet<SanPham> SanPham { get; set; }
     public DbSet<TaiKhoan> TaiKhoan { get; set; }
+    public DbSet<KhuyenMai> KhuyenMai { get; set; }
+   
+
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -165,8 +168,14 @@ public class ApplicationDbContext : DbContext
             .WithOne(g => g.SanPham)
             .HasForeignKey(g => g.SanPhamId);
         modelBuilder.Entity<SanPham>()
-            .Property(s => s.KhuyenMai)
-            .HasPrecision(5, 2);
+            .HasOne(s => s.KhuyenMai)
+            .WithMany(km => km.SanPhams)
+            .HasForeignKey(s => s.KhuyenMaiId)
+            .OnDelete(DeleteBehavior.SetNull); // Nếu xóa KM, sản phẩm vẫn giữ nguyên
+
+
+
+
 
         // TaiKhoan
         modelBuilder.Entity<TaiKhoan>()
@@ -181,6 +190,16 @@ public class ApplicationDbContext : DbContext
             .WithOne(n => n.TaiKhoan)
             .HasForeignKey<NhanVien>(n => n.Id)
             .IsRequired(false);
+
+        // 🔹 KhuyenMai
+        modelBuilder.Entity<KhuyenMai>()
+            .HasKey(k => k.Id);
+        modelBuilder.Entity<KhuyenMai>()
+            .Property(k => k.GiaTri)
+            .HasPrecision(5, 2);
+
+        
+
 
     }
 }

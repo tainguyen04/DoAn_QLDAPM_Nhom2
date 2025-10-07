@@ -25,7 +25,7 @@ namespace QLCHBanDienThoaiMoi.Areas.Admin.Controllers
         // GET: SanPhams
         public async Task<IActionResult> Index()
         {
-            var applicationDbContext = _context.SanPham.Include(s => s.DanhMucSanPham);
+            var applicationDbContext = _context.SanPham.Include(s => s.DanhMucSanPham).Include(s => s.KhuyenMai);
             return View(await applicationDbContext.ToListAsync());
         }
 
@@ -39,6 +39,7 @@ namespace QLCHBanDienThoaiMoi.Areas.Admin.Controllers
 
             var sanPham = await _context.SanPham
                 .Include(s => s.DanhMucSanPham)
+                .Include(s => s.KhuyenMai)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (sanPham == null)
             {
@@ -85,6 +86,8 @@ namespace QLCHBanDienThoaiMoi.Areas.Admin.Controllers
         public IActionResult Create()
         {
             ViewData["DanhMucId"] = new SelectList(_context.DanhMucSanPham, "Id", "TenDanhMuc");
+            ViewData["KhuyenMaiId"] = new SelectList(_context.KhuyenMai
+                                                        .Select(k=> new {k.Id, Ten = k.TenKhuyenMai + "-"+k.GiaTri+"%"}), "Id", "Ten");
             return View();
         }
 
@@ -93,7 +96,7 @@ namespace QLCHBanDienThoaiMoi.Areas.Admin.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(IFormFile file,[Bind("Id,TenSanPham,GiaNhap,GiaBan,SoLuongTon,DanhMucId,HangSanXuat,MoTa,HinhAnh,KhuyenMai")] SanPham sanPham)
+        public async Task<IActionResult> Create(IFormFile file,[Bind("Id,TenSanPham,GiaNhap,GiaBan,SoLuongTon,DanhMucId,HangSanXuat,MoTa,HinhAnh,KhuyenMaiId")] SanPham sanPham)
         {
             
             if (ModelState.IsValid)
@@ -105,6 +108,8 @@ namespace QLCHBanDienThoaiMoi.Areas.Admin.Controllers
             }
             
                 ViewData["DanhMucId"] = new SelectList(_context.DanhMucSanPham, "Id", "TenDanhMuc", sanPham.DanhMucId);
+                ViewData["KhuyenMaiId"] = new SelectList(_context.KhuyenMai
+                                                        .Select(k => new { k.Id, Ten = k.TenKhuyenMai + " - " + k.GiaTri + "%" }),"Id","Ten",sanPham.KhuyenMaiId);
             return View(sanPham);
         }
 
@@ -123,7 +128,9 @@ namespace QLCHBanDienThoaiMoi.Areas.Admin.Controllers
                 return NotFound();
             }
             ViewData["DanhMucId"] = new SelectList(_context.DanhMucSanPham, "Id", "TenDanhMuc", sanPham.DanhMucId);
-            
+            ViewData["KhuyenMaiId"] = new SelectList(_context.KhuyenMai
+                                                        .Select(k => new { k.Id, Ten = k.TenKhuyenMai + " - " + k.GiaTri + "%" }), "Id", "Ten", sanPham.KhuyenMaiId);
+
             return View(sanPham);
         }
 
@@ -132,7 +139,7 @@ namespace QLCHBanDienThoaiMoi.Areas.Admin.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(IFormFile file,int id, [Bind("Id,TenSanPham,GiaNhap,GiaBan,SoLuongTon,DanhMucId,HangSanXuat,MoTa,HinhAnh,KhuyenMai")] SanPham sanPham)
+        public async Task<IActionResult> Edit(IFormFile file,int id, [Bind("Id,TenSanPham,GiaNhap,GiaBan,SoLuongTon,DanhMucId,HangSanXuat,MoTa,HinhAnh,KhuyenMaiId")] SanPham sanPham)
         {
             if (id != sanPham.Id)
             {
@@ -178,6 +185,8 @@ namespace QLCHBanDienThoaiMoi.Areas.Admin.Controllers
                 return RedirectToAction(nameof(Index));
             }
             ViewData["DanhMucId"] = new SelectList(_context.DanhMucSanPham, "Id", "TenDanhMuc", sanPham.DanhMucId);
+            ViewData["KhuyenMaiId"] = new SelectList(_context.KhuyenMai
+                                                        .Select(k => new { k.Id, Ten = k.TenKhuyenMai + " - " + k.GiaTri + "%" }), "Id", "Ten", sanPham.KhuyenMaiId);
             return View(sanPham);
         }
 
