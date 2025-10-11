@@ -6,13 +6,17 @@ namespace QLCHBanDienThoaiMoi.Models
         public string TenDangNhap { get; set; } = null!;
         public string MatKhau { get; set; } = null!;
         public VaiTro VaiTro { get; set; }
+        public TrangThai TrangThai { get; set; }
         public NhanVien? NhanVien { get; set; }
         public KhachHang? KhachHang { get; set; }
     }
     public enum VaiTro
     {
-        Admin = 1,
-        User = 0
+        Admin,User 
         
+    }
+    public enum TrangThai
+    {
+        Active,Locked
     }
 }
