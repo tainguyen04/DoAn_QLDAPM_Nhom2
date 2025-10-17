@@ -1,3 +1,5 @@
+﻿using System.ComponentModel.DataAnnotations.Schema;
+
 namespace QLCHBanDienThoaiMoi.Models
 {
     public class SanPham
@@ -16,7 +18,19 @@ namespace QLCHBanDienThoaiMoi.Models
         public string HangSanXuat { get; set; } = null!;
         public string MoTa { get; set; } = null!;
         public string? HinhAnh { get; set; }
-        
+        [NotMapped]
+        public decimal GiaKhuyenMai
+        {
+            get
+            {
+                // Logic tính toán: Nếu có khuyến mãi, giảm %; ngược lại trả giá gốc
+                if (KhuyenMai == null || KhuyenMai.GiaTri <= 0)
+                    return GiaBan;
+
+                return GiaBan * (1 - (KhuyenMai.GiaTri / 100));  // 100m để chính xác decimal
+            }
+        }
+
         public DanhMucSanPham? DanhMucSanPham { get; set; }
         public KhuyenMai? KhuyenMai { get; set; }
         public ICollection<ChiTietHoaDonNhap> ChiTietHoaDonNhaps { get; set; } = new List<ChiTietHoaDonNhap>();

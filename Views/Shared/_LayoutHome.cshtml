@@ -34,6 +34,11 @@
                         <li class="nav-item">
                             <a asp-area="" asp-controller="GioHangs" asp-action="Index" class="btn btn-outline-primary">
                                 <i class="fa-solid fa-cart-shopping" ></i> Giỏ Hàng
+                                @if (ViewBag.soSanPham != null && ViewBag.soSanPham > 0)
+                                {
+                                    <span class="badge bg-danger">@ViewBag.soSanPham</span>
+                                }
+                                
                             </a>
                         </li>
 
@@ -48,12 +53,7 @@
         </nav>
 
     </header>
-    @if (TempData["ThongBao"] != null)
-    {
-        <div class="alert alert-success text-center mt-3">
-            @TempData["ThongBao"]
-        </div>
-    }
+   
 
     @RenderSection("FullWidthCarousel", required: false)
     <div class="container">
@@ -71,5 +71,15 @@
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
     @await RenderSectionAsync("Scripts", required: false)
+    @if (TempData["ThongBao"] != null)
+    {
+
+        <script>
+            // Encode UTF-8 an toàn cho tiếng Việt
+            var encodedMessage = '@Html.Raw(Uri.EscapeDataString(TempData["ThongBao"].ToString()))';
+            var message = decodeURIComponent(encodedMessage);
+            alert(message);
+    </script>
+    }
 </body>
 </html>

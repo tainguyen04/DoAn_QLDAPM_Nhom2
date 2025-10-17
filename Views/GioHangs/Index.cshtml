@@ -13,10 +13,10 @@
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.KhachHang)
+                @Html.DisplayNameFor(model => model.SanPham.TenSanPham)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.SanPham)
+                @Html.DisplayNameFor(model => model.SanPham.GiaBan)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.SoLuong)
@@ -28,18 +28,22 @@
 @foreach (var item in Model) {
         <tr>
             <td>
-                @Html.DisplayFor(modelItem => item.KhachHang.Id)
+                @Html.DisplayFor(modelItem => item.SanPham.TenSanPham)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.SanPham.Id)
+                @Html.FormatPrice(item.SanPham.GiaKhuyenMai)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.SoLuong)
             </td>
-            <td>
-                @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
-                @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
-                @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
+            <td class="text-center">
+                
+                    <div class="btn-group btn-group-sm column-gap-sm-1">
+                        <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-outline-danger" title="Xóa">
+                            <i class="fas fa-trash"></i>
+                        </a>
+                    </div>
+                
             </td>
         </tr>
 }
