@@ -32,7 +32,7 @@
                     <!-- Các liên kết bên phải -->
                     <ul class="navbar-nav mb-2 mb-sm-0" style="margin-right:30px;gap:5px;">
                         <li class="nav-item">
-                            <a asp-controller="GioHang" asp-action="Index" class="btn btn-outline-primary">
+                            <a asp-area="" asp-controller="GioHangs" asp-action="Index" class="btn btn-outline-primary">
                                 <i class="fa-solid fa-cart-shopping" ></i> Giỏ Hàng
                             </a>
                         </li>
@@ -48,6 +48,12 @@
         </nav>
 
     </header>
+    @if (TempData["ThongBao"] != null)
+    {
+        <div class="alert alert-success text-center mt-3">
+            @TempData["ThongBao"]
+        </div>
+    }
 
     @RenderSection("FullWidthCarousel", required: false)
     <div class="container">

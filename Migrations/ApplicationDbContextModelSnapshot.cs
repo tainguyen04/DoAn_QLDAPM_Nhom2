@@ -25,12 +25,10 @@ namespace QLCHBanDienThoaiMoi.Migrations
             modelBuilder.Entity("QLCHBanDienThoaiMoi.Models.ChiTietHoaDonBan", b =>
                 {
                     b.Property<int>("HoaDonBanId")
-                        .HasColumnType("int")
-                        .HasColumnOrder(1);
+                        .HasColumnType("int");
 
                     b.Property<int>("SanPhamId")
-                        .HasColumnType("int")
-                        .HasColumnOrder(2);
+                        .HasColumnType("int");
 
                     b.Property<int>("GiaBan")
                         .HasColumnType("int");
@@ -87,26 +85,29 @@ namespace QLCHBanDienThoaiMoi.Migrations
 
             modelBuilder.Entity("QLCHBanDienThoaiMoi.Models.GioHang", b =>
                 {
-                    b.Property<int>("KhachHangId")
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int?>("KhachHangId")
                         .HasColumnType("int");
 
                     b.Property<int>("SanPhamId")
                         .HasColumnType("int");
 
-                    b.Property<int?>("GioHangKhachHangId")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("GioHangSanPhamId")
-                        .HasColumnType("int");
+                    b.Property<string>("SessionId")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("SoLuong")
                         .HasColumnType("int");
 
-                    b.HasKey("KhachHangId", "SanPhamId");
+                    b.HasKey("Id");
+
+                    b.HasIndex("KhachHangId");
 
                     b.HasIndex("SanPhamId");
-
-                    b.HasIndex("GioHangKhachHangId", "GioHangSanPhamId");
 
                     b.ToTable("GioHang");
                 });
@@ -118,12 +119,6 @@ namespace QLCHBanDienThoaiMoi.Migrations
                         .HasColumnType("int");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<int?>("GioHangKhachHangId")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("GioHangSanPhamId")
-                        .HasColumnType("int");
 
                     b.Property<int?>("KhachHangId")
                         .HasColumnType("int");
@@ -137,13 +132,14 @@ namespace QLCHBanDienThoaiMoi.Migrations
                     b.Property<int>("PhuongThucThanhToan")
                         .HasColumnType("int");
 
+                    b.Property<int>("TrangThai")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
 
                     b.HasIndex("KhachHangId");
 
                     b.HasIndex("NhanVienId");
-
-                    b.HasIndex("GioHangKhachHangId", "GioHangSanPhamId");
 
                     b.ToTable("HoaDonBan");
                 });
@@ -363,6 +359,9 @@ namespace QLCHBanDienThoaiMoi.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int>("TrangThai")
+                        .HasColumnType("int");
+
                     b.Property<int>("VaiTro")
                         .HasColumnType("int");
 
@@ -421,10 +420,6 @@ namespace QLCHBanDienThoaiMoi.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("QLCHBanDienThoaiMoi.Models.GioHang", null)
-                        .WithMany("GioHangs")
-                        .HasForeignKey("GioHangKhachHangId", "GioHangSanPhamId");
-
                     b.Navigation("KhachHang");
 
                     b.Navigation("SanPham");
@@ -439,10 +434,6 @@ namespace QLCHBanDienThoaiMoi.Migrations
                     b.HasOne("QLCHBanDienThoaiMoi.Models.NhanVien", "NhanVien")
                         .WithMany("HoaDonBans")
                         .HasForeignKey("NhanVienId");
-
-                    b.HasOne("QLCHBanDienThoaiMoi.Models.GioHang", null)
-                        .WithMany("HoaDonBans")
-                        .HasForeignKey("GioHangKhachHangId", "GioHangSanPhamId");
 
                     b.Navigation("KhachHang");
 
@@ -513,13 +504,6 @@ namespace QLCHBanDienThoaiMoi.Migrations
             modelBuilder.Entity("QLCHBanDienThoaiMoi.Models.DanhMucSanPham", b =>
                 {
                     b.Navigation("SanPhams");
-                });
-
-            modelBuilder.Entity("QLCHBanDienThoaiMoi.Models.GioHang", b =>
-                {
-                    b.Navigation("GioHangs");
-
-                    b.Navigation("HoaDonBans");
                 });
 
             modelBuilder.Entity("QLCHBanDienThoaiMoi.Models.HoaDonBan", b =>
