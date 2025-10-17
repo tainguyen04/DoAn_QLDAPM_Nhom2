@@ -25,7 +25,7 @@ public class ApplicationDbContext : DbContext
     public DbSet<SanPham> SanPham { get; set; }
     public DbSet<TaiKhoan> TaiKhoan { get; set; }
     public DbSet<KhuyenMai> KhuyenMai { get; set; }
-   
+
 
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -71,7 +71,7 @@ public class ApplicationDbContext : DbContext
 
         // GioHang
         modelBuilder.Entity<GioHang>()
-            .HasKey(g => new { g.KhachHangId, g.SanPhamId });
+            .HasKey(g => g.Id);
         modelBuilder.Entity<GioHang>()
             .HasOne(g => g.KhachHang)
             .WithMany(k => k.GioHangs)
@@ -81,6 +81,7 @@ public class ApplicationDbContext : DbContext
             .HasOne(g => g.SanPham)
             .WithMany(s => s.GioHangs)
             .HasForeignKey(g => g.SanPhamId);
+
 
         // HoaDonNhap
         modelBuilder.Entity<HoaDonNhap>()
@@ -198,7 +199,7 @@ public class ApplicationDbContext : DbContext
             .Property(k => k.GiaTri)
             .HasPrecision(5, 2);
 
-        
+
 
 
     }
