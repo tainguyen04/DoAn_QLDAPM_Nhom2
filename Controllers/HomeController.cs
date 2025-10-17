@@ -26,13 +26,16 @@ namespace QLCHBanDienThoaiMoi.Controllers
                             .Include(s => s.DanhMucSanPham)
                             .Include(s => s.KhuyenMai)
                             .OrderByDescending(s => s.KhuyenMai != null ? s.KhuyenMai.GiaTri : 0);
-            var totalItems = await sanPhams.CountAsync();
+            var totalItems = await _context.SanPham.AsNoTracking().CountAsync();
             var totalPages = (int)Math.Ceiling((double)totalItems / pageSize);
             var pagedSanPhams = await sanPhams.Skip((page - 1) * pageSize).Take(pageSize).ToListAsync();
             ViewBag.TotalItems = totalItems;
             ViewBag.CurrentPage = page;
             ViewBag.PageSize = pageSize;
             ViewBag.TotalPages = totalPages;
+
+            var soSanPham = await _context.GioHang.CountAsync();
+            ViewBag.SoSanPham = soSanPham;
             return View(pagedSanPhams);
         }
 

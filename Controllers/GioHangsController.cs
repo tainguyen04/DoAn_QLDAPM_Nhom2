@@ -23,6 +23,7 @@ namespace QLCHBanDienThoaiMoi.Controllers
         public async Task<IActionResult> Index()
         {
             var applicationDbContext = _context.GioHang.Include(g => g.KhachHang).Include(g => g.SanPham);
+            
             return View(await applicationDbContext.ToListAsync());
         }
 
@@ -68,14 +69,15 @@ namespace QLCHBanDienThoaiMoi.Controllers
         // Thêm vào giỏ hàng khi người dùng chọn sản phẩm
         public async Task<IActionResult> AddToCart(int sanPhamId, int soLuong)
         {
-            string sessionId = HttpContext.Session.GetString("CartSessionId");
-            if(sessionId == null)
+            string sessionId = HttpContext.Session.GetString("CartSessionId")?.Trim();
+            if(string.IsNullOrEmpty(sessionId))
             {
                 // Nếu chưa có session, tạo mới
                 sessionId = Guid.NewGuid().ToString();
                 HttpContext.Session.SetString("CartSessionId", sessionId);
             }
             var existingCartItem = await _context.GioHang
+                .AsNoTracking()
                 .FirstOrDefaultAsync(g => g.SessionId == sessionId && g.SanPhamId == sanPhamId);
             if (existingCartItem != null)
             {
@@ -96,7 +98,7 @@ namespace QLCHBanDienThoaiMoi.Controllers
                 _context.Add(newCartItem);
             }
             await _context.SaveChangesAsync();
-            TempData["ThongBao"] = "Đã thêm sản phẩm vào giỏ hàng!";
+            TempData["ThongBao"] = "Đã thêm vào giỏ hàng";
             return Redirect(Request.Headers["Referer"].ToString());
         }
         // POST: GioHangs/Edit/5
@@ -147,7 +149,7 @@ namespace QLCHBanDienThoaiMoi.Controllers
             var gioHang = await _context.GioHang
                 .Include(g => g.KhachHang)
                 .Include(g => g.SanPham)
-                .FirstOrDefaultAsync(m => m.KhachHangId == id);
+                .FirstOrDefaultAsync(m => m.Id == id);
             if (gioHang == null)
             {
                 return NotFound();
